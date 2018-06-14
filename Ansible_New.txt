@@ -1,0 +1,202 @@
+Ansible New
+1)In ansible,we can have local inventory file which is residing along with other code,not in /etc/ansible/hosts.
+a)ansible --list-hosts all		//It will display the number of hosts part of this machine.
+b)ansible -i dev --list-hosts all	//It will check the local inventory file which is present in the same
+									 directory with the filename dev.
+c)vim /etc/ansible/ansible.cfg		//It is location where we set default value for ansible.
+d)when we have a local ansible.cfg and set the default path for inventory file,then by typing the below command will work
+ansible --list-hosts all		
+In ansible,task is the building block.It is made up of two parts.Modules and any arguments for that module.
+
+e)There are two keys for a play,they are Hosts and Tasks.
+Play is way to built multiple tasks that execute against the same target.
+
+f)Different pattern options are
+(i)webservers:dbservers		//The following patterns address one or more groups. Groups separated by a colon indicate 
+an “OR” configuration. This means the host may be in either one group or the other.
+(ii)webservers:!phoenix			//You can exclude groups as well, for instance, all machines must be in the group 
+webservers but not in the group phoenix.
+(iii)webservers:&staging	//You can also specify the intersection of two groups. This would mean the hosts must 
+be in the group webservers and the host must also be in the group staging.
+g)---
+- hosts: all
+  become: true
+  tasks:
+    - name: install apache2
+      apt: name={{item}} state=present update_cache=yes
+      with_items:
+         - apache2
+         - libapache2-mod-wsgi
+         - python-pip
+         - python-virtualenv
+
+Item is used if we want to install the multiple packages in a single time.
+h)Service handler is a special type of task.Inorder to call handlers,we use notify.This is compulsory.
+If there is change in behaviour,it will notify and handler will be called otherwise it won't be called.
+i)Sample playbook which will copy the content from server machine to node machine.
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: install apache
+      apt: name=apache2 state=present update_cache=yes
+    - name: install mysql-server
+      apt: name=mysql-server state=present update_cache=yes
+    - name: copy demo app source
+      copy: src=/home/ubuntu/playbooks/a.txt dest=/var/www/demo mode=0755
+      notify: restart apache2
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
+j)wait_for tag is used for checking the service is running on the proper port or not
+2)Roles
+a)Ansible role is a folder or we can put all our tasks files variables handlers that are part of specific
+function.We can compose servers as a combination of various roles.
+Advantages of Roles are
+(i)Code reuse,We can role for multiple applications.
+(ii)We can segregate different functionalities using Roles.
+b)Ansible Galaxy is the place from which we can upload/download different roles
+ansible-galaxy init control 		//It will download the role named control.
+c)Folder structure for running roles in Ansible
+ playbook
+	ControlWithRole.yml
+	roles
+		
+		apache2
+		
+		control
+				defaults
+				files
+				handlers
+				meta
+				tasks
+					main.yml
+					
+				templates
+				tests
+				vars
+		
+		webserver
+
+This is the folder structure of the Roles
+(i)Contents of ControlWithRole.yml
+---
+- hosts: all
+  become: true
+  roles:
+   - control
+
+(ii)Contents of main.yml(Which is present in /roles/control/tasks)
+---
+# tasks file for control
+- name: install tools
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+      - curl
+      - python-httplib2
+
+d)In case of handlers,we don't to explicitly mention on the mainfile that we have copied the content to
+roles/control/handlers/main.yml
+e)include tag can be used to include one playbook inside another playbook.We can use under task key or
+at handlers key.
+One example which calls one playbook from another playbook.
+The contents of site.yml is displayed below.
+---
+ - include: AptWithRole.yml
+
+ ansible-playbook site.yml
+ 
+3)Variables
+a)In the case of variables that are defined in playbook,
+(i)default will have lowest priority
+(ii)extra vars (-e in the command line) always win 
+(iii)Inside of roles,we do have vars/main.yml where we can put the variable.
+(iv)We can put variable along with task in the playbook itself.
+(v)we can include vars in the play level in the playbook.
+
+4)Ansible Vaults
+Ansible Vault is a feature of ansible that allows you to keep sensitive data such as passwords or keys in 
+encrypted files, rather than as plaintext in playbooks or roles. These vault files can then be distributed
+or placed in source control.
+a)ansible-vault create vault		//For creating a vault file(We need to enter the password twice for
+creating the file.Once it is done add the content(db password or whatever),then save the file.Now when we
+try to open that file,it will be the encrypted file)
+ansible-vault edit vault			//For editing the original file.
+(i)ansible-playbook --ask-vault-pass <playbook name>
+(ii)Create a vault password file and put the password on this particular file.
+ansible-playbook --vault-password-file <location of the vault password file>
+
+The main advantage of roles are to minimize the duplication and maximize the reusability if you have some
+encapsulation.
+
+5)In ansible,tags are arbitrary values or labels that we can apply to tasks or playbooks.
+(i)ansible-playbook apt.yml --step			//for running only specific task in a playbook.In this case,it will
+ask us which option to use(yes/no/control C)etc. Control c is used to break the loop.
+(ii)ansible-playbook apt.yml --list-tasks	//It will display all the different tasks which are part of
+											the playbook apt.yml
+(iii)ansible-playbook apt.yml --start-at-task "copy demo app source"
+			Here it will start with the task named copy demo app source 
+6)YAML syntax
+---		//It is allowed to specify multiple YAML documents with the same simple file.
+We can use spaces but not tabs in YAML format.
+YAML is structured with key value pairs seperated by colons.
+- denotes means this is an entry in the previous key and whatever comes after it is the value part.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

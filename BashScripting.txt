@@ -1,0 +1,100 @@
+Bash Scripting
+1)Bash - History
+Bash is nothing but Bourne Again Shell.
+It is an open source project which was introduced to replace Bourne shell.It was developed by Brain Fox.
+2).bash_profile
+It is designed to execute when you login.
+When you have already logged in and opening new terminal,in that case you will be using bashrc.
+bash_profile is used for setting environment variables,alias etc.
+3).bashrc
+This only happen when we are going to restart the shell.
+4).bash_history
+.bash_history is nothing but the history of the commands which was used by that particular user.
+5).bash_logout
+The last thing it happened when you do exit or logout for whatever terminal which you have connected to.
+6)Almost everytime shell scripts will be having the extension of .sh,but it is not compulsory to have so.
+#/bin/bash is the shell environment which is required to run shell script.
+Exit status are 0 to successful completion and non-zero to failures.
+7)Special characters - Quotes and escapes
+a)Escaping something will allow to treat what comes after it literally.
+b)Single quote is a literal way of representing the literal value of each character in the quote.
+8)Using /dev/null
+If we are redirecting something to /dev/null,it won't display any output only.
+9)Read statement
+#/bin/bash
+echo "Enter your first name:"
+read FIRSTNAME
+echo "Your last name is :"
+read LASTNAME
+echo ""
+echo "Your fullname is $FIRSTNAME $LASTNAME"
+echo ""
+echo "Enter you age :"
+read AGE
+echo "In next 10 years,you will be `expr $AGE + 10` years old"
+
+Output:
+Enter your first name:
+Jithin 
+Your last name is :
+Justice
+Your fullname is Jithin Justice
+Enter you age :
+27
+In next 10 years,you will be 37 years old
+
+10)Types of variables(Implicit vs Explicit Definition )
+(i)declare -i VAR=10		//Declaring a variable as integer
+declare -p VAR			//It will display which type of variable it is
+VAR = "jithin"
+echo $VAR
+output = 0       //Since we have already defined VAR as integer,it is not possible to change it into string.
+(ii)declare +i VAR	//Using this we can modify the type of the VAR variable.Now it can be integer or string.						
+declare -p VAR 
+VAR="jithin"
+echo $VAR
+Output is jithin
+(iii)Once we define a variable as readonly variable,we can't change its type.Only option to do the same
+is that close that terminal in which we are working.
+
+11)Arrays
+ARRAY=("First" "Second" "Third")		//This is how we define array
+echo ${ARRAY[*]}						//This will display the complete output
+Output:- First Second Third
+Array elements are space seperated not comma seperated.
+We can increase the size of the array,but we can't decrease the size of the array.
+We can explicity add a new array index to the already created array also.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

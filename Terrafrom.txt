@@ -1,0 +1,558 @@
+1)Terraform- It is a tool to automate the deployment of infrastructure.
+2)Terraform components 
+a)Terraform Executable - Terraform itself is an executable written and compiled in go language.
+b)Terraform file
+c)Terraform state file,which is created when you run terraform.
+d)In terraform terminology,AWS is a provider and the credentials are one of the required properties you need to define within the provider.
+e)In AWS we will creating a server to  host web and DB components - In terraform,it is called as Resource.
+f)Outputs - we need some information out of AWS 
+
+--------------------------------------------------------------------------------------------------
+Official Website
+1)What is terraform?
+Terraform is a tool for building, changing, and versioning infrastructure safely and efficiently. Terraform can manage existing and popular service providers as well as custom in-house solutions.
+Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure
+The infrastructure Terraform can manage includes low-level components such as compute instances, storage, and networking, as well as high-level components such as DNS entries, SaaS features, etc.
+
+2)Key Features of Terraform
+a)Infrastructure as Code
+Blueprint of your datacenter.
+Infrastructure can be shared and re-used.
+b)Execution Plans
+Terraform has a "planning" step where it generates an execution plan. 
+The execution plan shows what Terraform will do when you call apply
+c)Resource Graph
+It builds a graph of all your resources & parallelizes the creation and modification of any non-dependent resources.
+Because of this, Terraform builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
+d)Change Automation
+Complex changesets can be applied to your infrastructure with minimal human interaction.
+With the previously mentioned execution plan and resource graph, you know exactly what Terraform will change and in what order, avoiding many possible human errors.
+
+3)Use Cases of Terraform
+a)Heroku App Setup
+b)Multi-Tier Applications
+c)Self-Service Clusters
+d)Software Demos
+e)Disposable Environments
+f)Software Defined Networking
+g)Resource Schedulers
+h)Multi-Cloud Deployment
+
+4)Terraform v/s Cloud Formation
+Terraform 													Cloud Formation
+a)Scope														a)Scope
+Covers most important services and features					Covers almost all services and features provided
+provided by AWS.Other cloud providers and 3rd party			
+services are supported as well. 
+Multiple providers in a single configuration.
+b)License and Support 										b)License and Support
+Open source project.Hashicrop is offering an enterprise 	Managed service offered by AWS for free.
+product as well as 24*7 support.							Support for CF is included within AWS support.
+c)State management											c)State management 
+The state is stored on local disk by default.Supports		The state is managed by CF out-of-box.Prevents
+backends(S3 and DynamoDB)to synchronize state and state		conflicting changes. locking. 											 
+d)Modularization											d)Modularization
+Modules in terraform are self-contained packages of 		Different approach to split infrastructure	
+Terraform configurations that are managed as a group.		into modules-Nested Stacks,Export/Import 
+															output values.
+e)Verify Changes											e)Verify Changes 
+It allows to create a detailed execution plan before 		Using change sets allow to verify changes before
+applying your changes.										you execute these changes on stack. 
+f)Wait Conditions											f)Wait Conditions
+Terraform does not offer wait conditions					Adding breakpoints to the template is possible 
+															with wait conditions.
+g)Rolling Update											g)Rolling update
+Terraform does not support rolling update for ASG			Rolling update of EC2 instance managed by ASG
+															is supported.
+h)Handle existing resources									h)Handle existing resources
+It allows you to import existing resources as well as		It is not possible to manage or integrate
+using data sources to discover and integrate other			existing resources to CF.Only possibility:use 
+resources													input parameters to integrate with existing 
+															resources
+															
+5)Build Infrastructure
+a)The set of files used to describe infrastructure in Terraform is simply known as a Terraform configuration. 
+Terraform uses text files to describe infrastructure and to set variables. These text files are called Terraform configurations and end in .tf.
+Terraform format ends in .tf and JSON format ends in .tf.json. Save the contents to a file named example.tf. 
+Verify that there are no other *.tf files in your directory, since Terraform loads all of them.
+b)Sample Terraform file
+provider "aws" {
+  access_key = "ACCESS_KEY_HERE"
+  secret_key = "SECRET_KEY_HERE"
+  region     = "us-east-1"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-2757f631"
+  instance_type = "t2.micro"
+}
+c)The provider block is used to configure the named provider, in our case "aws." A provider is responsible for creating and managing resources. Multiple provider blocks can exist if a Terraform configuration is composed of multiple providers, which is a common situation.
+d)The resource block defines a resource that exists within the infrastructure. A resource might be a physical component such as an EC2 instance, or it can be a logical resource such as a Heroku application.
+The resource block has two strings before opening the block: the resource type and the resource name.
+e)terraform init 					// which initializes various local settings and data that will be used 
+										by subsequent commands.
+The aws provider plugin is downloaded and installed in a subdirectory of the current working directory, along with various other book-keeping files.
+f)terraform apply					//In the same directory as the example.tf file you created, run terraform apply
+When the value displayed is <computed>, it means that the value won't be known until the resource is created.
+If terraform apply failed with an error, read the error message and fix the error that occurred. At this stage, it is likely to be a syntax error in the configuration.
+g)Terraform also wrote some data into the terraform.tfstate file. This state file is extremely important; it keeps track of the IDs of created resources so that Terraform knows what it is managing.
+You can inspect the current state using terraform show.
+
+6)Change Infrastructure
+ As you change Terraform configurations, Terraform builds an execution plan that only modifies what is necessary to reach your desired state.
+ By using Terraform to change infrastructure, you can version control not only your configurations but also your state so you can see how the infrastructure evolved over time.
+ The prefix -/+ means that Terraform will destroy and recreate the resource, rather than updating it in-place. While some attributes can be updated in-place (which are shown with the ~ prefix), changing the AMI for an EC2 instance requires 
+ recreating it.
+ 
+7)Destroying Infrastructure
+Resources can be destroyed using the terraform destroy command, which is similar to terraform apply but it behaves as if all of the resources have been removed from the configuration.
+ 
+8)Resource Dependencies
+a)Sometimes there are dependencies between resources that are not visible to Terraform. The depends_on
+argument is accepted by any resource and accepts a list of resources to create explicit dependencies for.
+ 
+9)Provision
+a)Provisioners are used to execute scripts on a local or remote machine as part of resource creation 
+or destruction. 
+Provisioners can be used to bootstrap a resource, cleanup before destroy, run configuration management, etc.
+Terraform uses a number of defaults when connecting to a resource, but these can be overridden using a
+connection block in either a resource or provisioner. 
+b)Creation-Time Provisioners
+Creation-time provisioners are only run during creation, not during updating or any other lifecycle. They
+are meant as a means to perform bootstrapping of a system.
+If a creation-time provisioner fails, the resource is marked as tainted. 
+A tainted resource will be planned for destruction and recreation upon the next terraform apply. Terraform
+does this because a failed provisioner can leave a resource in a semi-configured state
+c)Destroy-Time Provisioners
+If when = "destroy" is specified, the provisioner will run when the resource it is defined within is 
+destroyed.
+Destroy provisioners are run before the resource is destroyed.If they fail, Terraform will error and
+rerun the provisioners again on the next terraform apply.
+d)Multiple provisioners - It can be specified within a resource. Multiple provisioners are executed
+in the order they're defined in the configuration file.
+e)Failure Behaviour
+By default, provisioners that fail will also cause the Terraform apply itself to error. The on_failure 
+setting can be used to change this
+(i)"continue" - Ignore the error and continue with creation or destruction.
+(ii)"fail" - Error (the default behaviour). If this is a creation provisioner, taint the resource.
+Example
+resource "aws_instance" "web" {
+# ...
+
+  provisioner "local-exec" {
+    command    = "echo ${self.private_ip} > file.txt"
+    on_failure = "continue"
+   }
+}
+f)Running Provisioners
+Provisioners are only run when a resource is created. 
+They are not a replacement for configuration management and changing the software of an already-running 
+server,and are instead just meant as a way to bootstrap a server.
+g)Failed Provisioners and Tainted Resources
+A resource that is tainted has been physically created, but can't be considered safe to use since 
+provisioning failed.
+When you generate your next execution plan, Terraform will not attempt to restart provisioning on the 
+same resource because it isn't guaranteed to be safe. Instead, Terraform will remove any tainted 
+resources and create new resources, attempting to provision them again after creation.
+Terraform also does not automatically roll back and destroy the resource during the apply when the 
+failure happens, because that would go against the execution plan: the execution plan would've said a
+resource will be created, but does not say it will ever be deleted.
+
+10)Input variables
+a)Defining Variables
+variable "access_key" {}
+variable "secret_key" {}
+variable "region" {
+  default = "us-east-1"
+}
+The first two have empty blocks {}. The third sets a default. If a default value is set, the variable is optional. Otherwise, the variable is required.
+b)Using Variables in Configuration
+provider "aws" {
+  access_key = "${var.access_key}"
+  secret_key = "${var.secret_key}"
+  region     = "${var.region}"
+}
+This uses more interpolations, this time prefixed with var.. This tells Terraform that you're accessing variables
+c)Assigning Variables
+(i)Command-line flags
+You can set variables directly on the command-line with the -var flag.
+$ terraform apply \
+  -var 'access_key=foo' \
+  -var 'secret_key=bar'
+# ...
+(ii)From a file
+To persist variable values, create a file and assign variables within this file. Create a file named terraform.tfvars with the following contents:
+access_key = "foo"
+secret_key = "bar"
+If the file is named something else, you can use the -var-file flag directly to specify a file. 
+You can use multiple -var-file arguments in a single command, 
+terraform apply \
+  -var-file="secret.tfvars" \
+  -var-file="production.tfvars"
+(iii)From environment variables
+Terraform will read environment variables in the form of TF_VAR_name to find the value for a variable. 
+Note: Environment variables can only populate string-type variables. List and map type variables must be populated via one of the other mechanisms.
+(iv)UI Input
+If you execute terraform apply with certain variables unspecified, Terraform will ask you to input their values interactively. 
+Note: UI Input is only supported for string variables. List and map variables must be populated via one of the other mechanisms.
+
+d)Lists
+Lists are defined either explicitly or implicitly
+
+# implicitly by using brackets [...]
+variable "cidrs" { default = [] }
+
+# explicitly
+variable "cidrs" { type = "list" }
+You can specify lists in a terraform.tfvars file:
+
+cidrs = [ "10.0.0.0/16", "10.1.0.0/16" ]
+
+e)Maps - Maps are a way to create variables that are lookup tables.
+variable "amis" {
+  type = "map"
+  default = {
+    "us-east-1" = "ami-b374d5a5"
+    "us-west-2" = "ami-4b32be2b"
+  }
+}
+A variable can have a map type assigned explicitly, or it can be implicitly declared as a map by specifying a default value that is a map. The above demonstrates both.
+
+Then, replace the aws_instance with the following:
+
+resource "aws_instance" "example" {
+  ami           = "${lookup(var.amis, var.region)}"
+  instance_type = "t2.micro"
+}
+The lookup function does a dynamic lookup in a map for a key.
+
+f)Assigning Maps
+terraform apply -var 'amis={ us-east-1 = "foo", us-west-2 = "bar" }'
+(i)Here is an example of setting a map's keys from a file. Starting with these variable definitions:
+Contents of variable.tf
+
+variable "region" {}
+variable "amis" {
+  type = "map"
+}
+output "ami" {
+  value = "${lookup(var.amis, var.region)}"
+}
+
+You can specify keys in a terraform.tfvars file:
+
+amis = {
+  "us-east-1" = "ami-abc123"
+  "us-west-2" = "ami-def456"
+}
+
+terraform apply -var region=us-west-2
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+  ami = ami-def456
+
+11)Output Variables
+a)Outputs are a way to tell Terraform what data is important. 
+output to show us the public IP address of the elastic IP address that we create
+Add this to any of your *.tf files:
+
+output "ip" {
+  value = "${aws_eip.ip.public_ip}"
+}
+
+b)We can also query the outputs after apply-time using terraform output:
+terraform output ip
+50.17.232.209
+
+12)Modules
+(i)Modules in Terraform are self-contained packages of Terraform configurations that are managed as a group.
+(ii)Modules are used to create reusable components, improve organization, and to treat pieces of infrastructure as a black box.
+(iii)The Terraform Registry includes a directory of ready-to-use modules for various common purposes, which can serve as larger building-blocks for your infrastructure.
+(iv)The source attribute is the only mandatory argument for modules.
+(v)Terraform can also retrieve modules from a variety of sources, including private module registries or directly from Git, Mercurial, HTTP, and local files.
+(vi)After adding a new module to configuration, it is necessary to run (or re-run) terraform init to obtain and install the new module's source code.
+(vii)The syntax for referencing module outputs is ${module.NAME.OUTPUT}, where NAME is the module name given in the header of the module configuration block and OUTPUT is the name of the output to reference.
+
+13)Configuration
+The format of the configuration files are able to be in two formats: Terraform format and JSON.Terraform format ends in .tf and JSON format ends in .tf.json
+
+a)Load Order and Semantics
+(i)Terraform loads all configuration files within the directory specified in alphabetical order.
+The files loaded must end in either .tf or .tf.json.Otherwise, the files are ignored. 
+(ii)It is okay to have one Terraform configuration file be Terraform syntax and another be JSON.
+(iii)Override files are the exception, as they're loaded after all non-override files, in alphabetical order.
+(iv)Two resources with the same name are not merged, and will instead cause a validation error.This is in contrast to overrides, which do merge.
+(v)Terraform configurations are declarative, so references to other resources and variables do not depend on the order they're defined.
+
+b)Configuration Syntax
+(i)The syntax of Terraform configurations is called HashiCorp Configuration Language (HCL).
+Basic bullet point reference:
+Single line comments start with #
+Multi-line comments are wrapped with /* and */
+Values are assigned with the syntax of key = value (whitespace doesn't matter).
+Strings are in double-quotes.Strings can interpolate other values using syntax wrapped in ${}
+Numbers are assumed to be base 10. If you prefix a number with 0x, it is treated as a hexadecimal number.
+Boolean values: true, false.
+Lists of primitive types can be made with square brackets ([]).
+Maps can be made with braces ({}) and colons (:): { "foo": "bar", "bar": "baz" }. 
+Commas are required between key/value pairs for single line maps. A newline between key/value pairs is sufficient in multi-line maps.
+The downsides of JSON are less human readability and the lack of comments. 
+
+c)Interpolation Syntax
+(i)Available variables
+(i.a)User string variables 
+Use the var. prefix followed by the variable name. For example, ${var.foo} 
+(i.b)User map variables
+The syntax is var.MAP["KEY"] For example, ${var.amis["us-east-1"]}
+(i.c)User list variables
+The syntax is "${var.LIST}". For example, "${var.subnets}" 
+(ii)Conditionals
+resource "aws_instance" "web" {
+  subnet = "${var.env == "production" ? var.prod_subnet : var.dev_subnet}"
+}
+(iii)Templates
+Templates are data-sources defined by a filename and some variables to use during interpolation. 
+They have a computed rendered attribute containing the result.
+
+d)Overrides
+(i)Terraform also has a concept of overrides, a way to create files that are loaded last and merged into your configuration, rather than appended.
+(ii)Overrides have a few use cases:
+Machines (tools) can create overrides to modify Terraform behavior without having to edit the Terraform configuration tailored to human readability.
+Temporary modifications can be made to Terraform configurations without having to modify the configuration itself.
+(iii)Examples of valid override files are override.tf, override.tf.json, temp_override.tf.Override files are loaded last in alphabetical order.
+
+e)Resources
+(i)Resources are a component of your infrastructure.
+(ii)It might be some low level component such as a physical server, virtual machine, or container.
+Or it can be a higher level component such as an email provider, DNS record, or database provider.
+(iii)The resource block creates a resource of the given TYPE (first parameter) and NAME (second parameter). The combination of the type and name must be unique.
+(iv)There are meta-parameters available to all resources:
+count (int),depends_on (list of strings) - Explicit dependencies that this resource has.,
+provider (string) - The name of a specific provider to use for this resource,
+lifecycle (configuration block) 
+(v)The lifecycle block allows the following keys to be set:
+(v.1)create_before_destroy (bool)
+Resources that utilize the create_before_destroy key can only depend on other resources that also include create_before_destroy. Referencing a resource that does not include create_before_destroy will result in a dependency graph cycle.
+(v.2)prevent_destroy (bool)-This flag provides extra protection against the destruction of a given resource. When this is set to true, any plan that includes a destroy of this resource will return an error message.
+(v.3)ignore_changes (list of strings)- Customizes how diffs are evaluated for resources, allowing individual attributes to be ignored through changes. 
+Using a partial string together with a wildcard (e.g. "rout*") is not supported.
+(vi)Timeouts
+Individual Resources may provide a timeouts block to enable users to configure the amount of time a specific operation is allowed to take before being considered an error.
+(vii)Explicit Dependencies
+The syntax of depends_on is a list of resources and modules:
+Resources are TYPE.NAME, such as aws_instance.web.
+Modules are module.NAME, such as module.foo.
+(viii)Connection Blocks
+Connection blocks describe to Terraform how to connect to the resource for provisioning.
+(ix)Provisioners
+Within a resource, you can specify zero or more provisioner blocks.
+(x)Using Variables With count
+When declaring multiple instances of a resource using count, it is common to want each instance to have a different value for a given attribute.
+You can use the ${count.index} 
+(xi)Syntax
+resource TYPE NAME {
+    CONFIG ...
+    [count = COUNT]
+    [depends_on = [NAME, ...]]
+    [provider = PROVIDER]
+
+    [LIFECYCLE]
+
+    [CONNECTION]
+    [PROVISIONER ...]
+}
+
+f)Data Sources
+(i)Use of data sources allows a Terraform configuration to build on information defined outside of Terraform, or defined by another separate Terraform configuration.
+Providers are responsible in Terraform for defining and implementing data sources. 
+(ii)Every data source in Terraform is mapped to a provider based on longest-prefix matching
+(iii)The data block creates a data instance of the given TYPE (first parameter) and NAME (second parameter). The combination of the type and name must be unique.
+
+g)Providers
+(i)Description
+Providers are responsible in Terraform for managing the lifecycle of a resource: create, read, update, delete.
+provider "aws" {
+  access_key = "foo"
+  secret_key = "bar"
+  region     = "us-east-1"
+}
+Using a resource in configuration implicitly creates an empty provider configuration for it unless a provider block is explicitly provided.
+(ii)Initialization
+Each time a new provider is added to configuration -- either explicitly via a provider block or by adding a resource from that provider.It's necessary to initialize that provider before use.
+(iii)Provider Versions
+If no version constraints is mentioned in configuration,then the latest version is installed.
+To Constrain the provider version as suggested, add a version argument to the provider configuration block:
+provider "aws" {
+  version = "~> 1.0"
+
+  access_key = "foo"
+  secret_key = "bar"
+  region     = "us-east-1"
+}
+To upgrade to the latest acceptable version of each provider, run terraform init -upgrade
+This command also upgrades to the latest versions of all Terraform modules.
+(iv)Multiple Provider Instances
+You can define multiple configurations for the same provider in order to support multiple regions, multiple hosts, etc. 
+A provider block with out alias set is known as the default provider configuration. When alias is set, it creates an additional provider configuration
+
+h)Variables
+Input variables serve as parameters for a Terraform module.
+variable "key" {
+  type = "string"
+}
+
+variable "images" {
+  type = "map"
+
+  default = {
+    us-east-1 = "image-1234"
+    us-west-2 = "image-4567"
+  }
+}
+
+variable "zones" {
+  default = ["us-east-1a", "us-east-1b"]
+}
+(i)type (Optional)-Valid values are string, list, and map. If no default is provided, the type is assumed to be string.
+(ii)default (Optional)-This sets a default value for the variable.
+(iii)description (Optional)-A human-friendly description for the variable. 
+
+(iv)Booleans
+variable "active" {
+  default = false
+}
+
+(v)Variable Merging
+
+For example, if you define a variable twice on the command line:
+
+$ terraform apply -var foo=bar -var foo=baz
+Then the value of foo will be baz, since it was the last definition seen.
+
+However, for maps, the values are merged:
+
+$ terraform apply -var 'foo={quux="bar"}' -var 'foo={bar="baz"}'
+The resulting value of foo will be:
+
+{
+  quux = "bar"
+  bar = "baz"
+}
+(vi)Variable Precedence
+Both these files have the variable baz defined:
+
+foo.tfvars
+
+baz = "foo"
+bar.tfvars
+
+baz = "bar"
+When they are passed in the following order:
+
+$ terraform apply -var-file=foo.tfvars -var-file=bar.tfvars
+The result will be that baz will contain the value bar because bar.tfvars has the last definition loaded.
+
+i)Outputs
+Output Variables
+a)Outputs are a way to tell Terraform what data is important. 
+output to show us the public IP address of the elastic IP address that we create
+Add this to any of your *.tf files:
+
+output "ip" {
+  value = "${aws_eip.ip.public_ip}"
+}
+
+b)We can also query the outputs after apply-time using terraform output:
+terraform output ip
+50.17.232.209
+c)Description
+value (required) - The value of the output.
+description (optional) - A human-friendly description for the output.
+depends_on (list of strings) - Explicit dependencies that this output has.
+sensitive (optional, boolean) 
+
+j)Local Values
+The names given for the items in the locals block must be unique throughout a module. 
+
+k)Modules
+(i)Modules in Terraform are self-contained packages of Terraform configurations that are managed as a group. Modules are used to create reusable components in Terraform as well as for basic code organization.
+(ii)Example
+module "consul" {
+  source  = "hashicorp/consul/aws"
+  servers = 5
+}
+(iii.a)source - (Required) 
+(iii.b)version - (Optional) 
+version is supported only for modules retrieved from module registries.
+(iii.c)providers - (Optional)
+
+l)Terraform 
+terraform {
+  required_version = "> 0.7.0"
+}
+The currently only allowed configurations within this block are required_version and backend.
+required_version specifies a set of version constraints that must be met to perform operations on this configuration.
+No value within the terraform block can use interpolations.
+A "backend" in Terraform determines how state is loaded and how an operation such as apply is executed. 
+By default, Terraform uses the "local" backend
+
+= (or no operator): exact version equality
+
+!=: version not equal
+
+>, >=, <, <=: version comparison, where "greater than" is a larger version number
+
+~>: pessimistic constraint operator. Example: for ~> 0.9, this means >= 0.9, < 1.0. Example: for ~> 0.8.4, this means >= 0.8.4, < 0.9
+
+
+m)Terraform Enterprise
+Terraform can be configured to be able to upload to HashiCorp's Terraform Enterprise. This configuration doesn't change the behavior of Terraform itself, it only configures your Terraform configuration to support being uploaded to Terraform Enterprise via the push command.
+Terraform Enterprise configuration looks like the following:
+atlas {
+  name = "mitchellh/production-example"
+}
+The atlas block configures the settings when Terraform is pushed to Terraform Enterprise. Only one atlas block is allowed.
+No value within the atlas block can use interpolations.
+
+n)Environment Variables
+(i)TF_LOG-If set to any value, enables detailed logs to appear on stderr which is useful for debugging.
+(ii)TF_LOG_PATH-This specifies where the log should persist its output to.
+export TF_LOG_PATH=./terraform.log
+(iii)TF_INPUT-If set to "false" or "0", causes terraform commands to behave as if the -input=false flag was specified. 
+(iv)TF_MODULE_DEPTH-By setting this to 0, for example, you enable commands such as plan and graph to display more compressed information.
+(v)TF_VAR_name
+(vi)TF_CLI_ARGS and TF_CLI_ARGS_name
+(vii)TF_DATA_DIR
+(viii)TF_SKIP_REMOTE_TESTS
+
+
+14)Terraform Commands (CLI)
+a)Apply
+The terraform apply command is used to apply the changes required to reach the desired state of the configuration, or the pre-determined set of actions generated by a terraform plan execution plan.
+
+15)State
+This state is used by Terraform to map real world resources to your configuration, keep track of metadata, and to improve performance for large infrastructures.
+This state is stored by default in a local file named "terraform.tfstate", but it can also be stored remotely, which works better in a team environment.
+Terraform uses this local state to create plans and make changes to your infrastructure.
+The state is in JSON format and Terraform will promise backwards compatibility with the state file. 
+a)Purpose of Terraform State
+State is a necessary requirement for Terraform to function.
+(i)Mapping to real world - Not all resources support tags, and not all cloud providers support tags.Therefore, for mapping configuration to resources in the real world, Terraform requires states.
+(ii)Metadata
+When you delete a resource from a Terraform configuration, Terraform must know how to delete that resource. Terraform can see that a mapping exists for a resource not in your configuration and plan to destroy. However, since the configuration no longer exists, it no longer knows the proper destruction order.
+To work around this, Terraform stores the creation-time dependencies within the state. Now, when you delete one or more items from the configuration, Terraform can still build the correct destruction ordering based only on the state.
+(iii)Performance
+Terraform stores a cache of the attribute values for all resources in the state. This is the most optional feature of Terraform state and is done only as a performance improvement.
+(iv)Syncing
+The primary motivation people have for using remote state files is in an attempt to improve using Terraform with teams. State files can easily result in conflicts when two people modify infrastructure at the same time.
+Remote state is the recommended solution to this problem. 
+At the time of writing, remote state works well but there are still scenarios that can result in state conflicts.
+
+b)Importing Existing Resource
+The current implementation of Terraform import can only import resources into the state. It does not generate configuration. A future version of Terraform will also generate configuration.
+Because of this, prior to running terraform import it is necessary to write manually a resource configuration block for the resource, to which the imported object will be attached.
+
+16)Why we use Terraform and not Chef,Puppet, Ansible, SaltStack, or CloudFormation
+It is infrastructure-as-Code(IAC)
+

@@ -1,0 +1,12 @@
+Git Commands
+1)git config --global user.name=jithinr
+2)git config --global user.email=jithinr@gmail.com
+3)git config --local			//Only for that repo
+4)git config --global 			//User specific,applicable to OS user
+5)git config --system			//System level,All repos and all users of OS
+6)git add <filename> 			//Adding file to staging area
+  git add .
+7)git add -p 					//Start interactive session for portion of file to add
+8)git commit -m "message"		//Commit the staged snapshot
+9)git commit -a					//Commit of all tracked untracked files.
+10)

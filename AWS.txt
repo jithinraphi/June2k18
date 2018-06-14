@@ -1,0 +1,13 @@
+AWS Questions
+1)I want to configure an S3 bucket so that I can retrieve files that have been deleted from the bucket?
+It is possible to safeguard against accidental deletion of files contained in an S3 bucket by enabling both
+S3 versioning and root account multi-factor authentication (MFA) delete support for the bucket.
+
+We can enable s3 versioning from the console,but we cannot enable MFA delete support for bucket through console,
+it is only possible from AWS CLI.
+aws s3api put-bucket-versioning --bucket bucketname --versioning-configuration Status=Enabled,MFADelete=Enabled 
+--mfa "your-mfa-serial-number mfa-code"
+
+ Because MFA delete and versioning support are enabled for the bucket, the file should appear to be gone
+ but in fact will now have a DeleteMarker file version ID marking the file for deletion.
+ 

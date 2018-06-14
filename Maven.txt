@@ -1,0 +1,8 @@
+Maven
+1)Maven lifecycle
+Three build-in lifecycle.They are default,clean and site.
+(i)The default handles your project deployment
+(ii)Clean lifecycle handles the project cleaning
+(iii)Site lifecycle handles creation of project's site documentation.
+
+A build lifecycle is made up of phases.

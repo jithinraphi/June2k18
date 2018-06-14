@@ -1,0 +1,32 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: jithin_april
+  region: us-east-1
+  availability_zone: a
+  subnet_id: subnet-6173b44d
+  instance_type: t2.micro
+  image_id: ami-43a15f3e
+  security_group_ids: ["sg-e5200492"]
+  retryable_tries: 120
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+transport:
+  ssh_key: /root/.ssh/jithin_april.pem
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[learn_chef_apache2::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:

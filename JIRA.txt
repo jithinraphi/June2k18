@@ -1,0 +1,102 @@
+JIRA
+1)User Story - It is short description of functionality.User Story needs to be clear and concise,but it can
+be divided into multiple tasks that are asked to different individuals.
+2)Epic - It is the collection of user stories that can be viewed in the road map.
+By default for scrum planning,we use story points.But in some of the cases,people are also using hours.
+In the new version of JIRA,versions and sprints are two different concepts.
+A version could be made up of multiple sprints.
+Stories are requirements usually need to broken up into multiple subtasks that needed to be worked on a 
+specific order by specific team member.
+While sprint is active in work mode you can still plan for future by adding new sprints,we can have only
+one active sprint at a time.
+Another name for sprint is iteration.
+We can also rank the issue in the JIRA agile,so it will come at the top.
+
+Stories added after the sprint starts are not displayed on the sprint report however it will be displayed
+on the Burndown chart.
+
+In the JIRA board settings,we do have columns
+Here we can set minimum and maximum values for the issue count
+
+Swimlane is a row on the board that can be used to group issues.
+
+
+Burndown chart will display the actual and estimated amount of work to be done in the current sprint.
+This chart is used in the daily scrum and retrospective.
+
+Sprint report is similar to Burndown chart,it shows the total story points being burned down through your 
+sprint.However the key difference is that,In Burndown chart,we can see the total number of story points 
+including the issues added after the sprint has started.While the sprint report,it reports a snapshot at 
+the moment you press the start sprint button.Any points added afterwards are not reflected.
+
+Velocity Chart - Track the amount of work completed from sprint to sprint. This helps you determine your
+team's velocity and estimate the work your team can realistically achieve in future sprints.
+
+------------------------------------------------------------------------------------------
+JIRA Questions
+
+1)Difference between Scrum and Kanban?
+a)Scrum
+(i)Scrum boards are for teams who like to plan their work in detail,before they start a project.
+(ii)Usually includes creating sprints and giving story points to user stories,in order to plan which story
+can go to which sprint.
+(iii)issues with time estimates(plan mode)
+(iv)Reports
+Burndown chart
+Sprint report
+Velocity report
+Version report
+Epic report
+(v)Advantages
+Detailed overview of the project
+Functionalities
+Early feedbacks
+(vi)Used with large scale projects
+(vii)3 roles- product owner,Scrum master and team members
+(viii)Time boxed sprints
+(ix)Work is pulled through system in batches(from backlog)
+(x)iteration planning
+
+b)Kanban
+(i)Allow users to start work without necessarily having a structured plan
+(ii)Uses same column base interface as scrum for tracking the status of tasks,without ability to organize
+those to sprints
+(iii)No time estimates(plan mode)
+(iv)Reports
+Control Chart
+(v)Advantages
+Setting up speed(Minimal configuration)
+Ease of use
+(vi)Used in case of smaller project size
+(vii)No prescribed roles
+(viii)Continuous delivery
+(ix)Work is pulled through the system
+(x)Constraint-based tasks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

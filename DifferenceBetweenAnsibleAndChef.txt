@@ -1,0 +1,37 @@
+Difference between Chef and Ansible
+1)Chef
+It is released in 2009
+It is written in Ruby.
+It utilizes master-agent model.
+Pull mechanism
+Initial setup is complicating
+Simple and structured
+Chef Vault
+
+2)Ansible
+It is agentless,making it quick and painless to setup.
+It is written in YAML.
+Push mechanism.
+It is written in python.
+It uses SSH for its transport.
+less concentration over configuration management
+Designed exclusively for programmers.
+High security using SSH
+
+
+
+Configuration management is the maintaining of a certain state or states across your infrastructure
+a)Configuration files called Cookbooks in Chef and playbook in ansible serve two duties,They are
+(i)It will tell what to do on a given system/systems
+(ii)They are text files that detail the step by step set of procedures to run an infrastructure,they also 
+serve as documentation.
+Previous problem : Documentary record of their configuration is unknown,that cookbook/playbook solves.
+b)Second major advantage is idempotency.
+
+Advantages of Ansible over Chef
+1)The source of Truth
+Ansible uses the more sensible option of a source control system for its source of truth,whereas in chef,
+chef server is the source of truth.
+2)Static and dynamic inventory
+In the case of Chef,host have to be individually registered to the Chef Server.
+Unlike Chef,Ansible can make use of Static and dynamic inventories of the host system.

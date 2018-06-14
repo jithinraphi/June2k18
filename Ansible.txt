@@ -1,0 +1,94 @@
+Ansible learning
+1)Ansible is written in python
+2)For installing ansible on Ubuntu 16.04  //We will be installing ansible on Server(Control Machine)
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+
+3)Configuration 
+
+Configuration file is present in /etc/ansible/ansible.cfg
+/etc/ansible/hosts 		//where inventory file is present.
+
+Please do the following changes in /etc/ansible/ansible.cfg
+inventory      = /etc/ansible/hosts
+sudo_user      = root
+2)Created a new user called ansible and gave appropriate permission to that particular user.
+useradd ansible and modified the /etc/sudoers file for ansible user.
+3)sudo ssh-keygen				//Created ssh-keygen for ansible user.
+  sudo ssh-copy-id ubuntu@<ipaddress> 	//Here ubuntu is the username of the node/client.
+  Once it is done successfully,we can do the following command
+  ssh <ipaddress of node>		//It will connect to the node/client machine.
+
+4)Ansible commmands
+a)ansible all -m ping					//ping all your nodes where -m is the module
+b)ansible all -a "/bin/echo hello"		//run a live command on all of your nodes -a=arbitory command.
+c)ansible all -a "ls -al /home/ubuntu"	//It will display the contents of /home/ubuntu file
+d)ansible all -m copy -a "src=test.txt dest=/tmp/test.txt"	//Copy files from one location to another.
+e)ansible all --list-hosts				//To list all the hosts
+f)ansible all -m setup					//To see the complete information about the machines which are 
+								present in the /etc/ansible/hosts.all means all groups.
+g)ansible all -m setup -a 'filter=*ipv4*'	//for getting the ipaddress of the machines which are present.
+								
+								
+								
+								
+
+5)While writing playbook we need to remember the following things
+a)In the /etc/ansible/hosts
+[local]
+localhost ansible_user=ubuntu						//this we need to add,if some error is there
+
+[ubuntu]
+52.201.223.245 ansible_user=ubuntu
+b)We can't use tab while writing playbook
+c)Sample working playbook
+---
+# This is a structural YAML example to install apache2 on Ubuntu
+- hosts: all
+  remote_user: root
+  become: yes
+  become_method: sudo
+  connection:  ssh
+  gather_facts: yes
+  tasks:
+  - name: Install apache2 server on Ubuntu nodes
+    apt:
+        pkg: apache2
+        state:  latest
+    notify:
+    - startservice
+  handlers:
+  - name: startservice
+    service:
+        name:  apache2
+        state:  restarted
+
+d)Variables can be used in playbook by using '{{}}'.
+Sample playbook where variables are used
+---
+# Checking how variables work in the vars section
+- hosts: '{{ myhosts }}'
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection:  ssh
+  gather_facts: '{{gather}}'
+  vars:
+    myhosts: all
+    gather: yes
+    pkg: telnet
+  tasks:
+  - name: Install telnet  on Ubuntu nodes
+    apt:
+        pkg: '{{pkg}}'
+        state: latest
+
+
+e)Notification and Handlers
+Notifications are used if something new software is installed,other no need to perform the action(whether it
+is restart or something else).
+notify name should match the name of the handler.
+

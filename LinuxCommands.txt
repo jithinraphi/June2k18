@@ -1,0 +1,189 @@
+Linux Commands
+
+1)pwd - To know which directory you are in.It gives us the absolute path, which means the path that starts 
+from the root. The root is the base of the Linux file system.It is denoted by a forward slash( / ).
+2)ls — Use the "Is" command to know what files are in the directory you are in. 
+3)ls -a - You can see all the hidden files by using the command 
+ls -l - Long listing
+drwxr-xr-x 2 root root 4096 Dec  3 10:34 learning
+-rw-r--r-- 1 root root    0 Nov 12 11:13 DockerLearning
+Here 
+d means we have directory
+- means we have file
+first root is owner name of file/directory
+second root is group owner
+next is size in bytes
+next is month year and date the file has last modified
+
+ls -lS - Sorting the file based on the size(descending)
+ls -lrS - Sorting the file based on the size(ascending)
+ls -R - List files/directories recursively
+ls -t - sort by last time modified
+ls > list - It will save the output of ls command in a file called list
+
+
+4)env - listing the environment variables
+path - path environment will look at all the directory location that bash will look in whenever we type
+a command at the prompt.
+echo - print what follows the screen,if some variable,then use $variable_name
+set - To see all the environment variable(aplhabetical order)
+export VARIABLE - export vaariable and its value to another shells
+
+5)whoami - display the currently logged user
+su - substitute user,change to another user account
+exit - leaves a shell environment that you have logged in
+reboot or init 6 - For restarting the machine
+halt or poweroff or init 0 - halt or shutdown the machine
+shutdown -h - shutdown the system
+shutdown -r - restart the system
+top - top shows the top running processes in the system.
+
+6)uname - display the name of the kernel
+uname -s - display the name of the kernel
+uname -r - display the kernel release number
+uname -v - display the kernel build version
+uname -m - display the machine type
+uname -o  - display the name of OS
+uname -a - display all the information
+
+7) pwd - present working directory(echo $PWD).
+cd - Change directory.Use the "cd" command to go to a directory.This command is case sensitive.
+cd - - Will go to previous directory
+cd ~ - will go to home directory
+
+8)Command history and command completion
+bash_history - hidden files within the home directory that contains log of commands entered at bash prompt.
+histfilesize - environment vaariable that specifies how many lines of history to keep
+history - It will show the history commands from .bash_history
+!<history number> - re-runs command from bash_history.
+
+9)Shell Configurations
+login shell - when you add a shell prompt,when you are connecting to a Linux system remotely through ssh.
+non login shell - when you use the terminal application.
+(i)The bash configuration file order -Login Shell
+  During a login shell,these configuration scripts are called in this order,
+  /etc/profile     -- setup all the default user variables,env variables
+  
+ ~/.bash_profile - 
+ ~/.bash_login - 
+ ~/.profile - 
+  
+First file that is found is used,others are ignored even though if it is ignored.
+/etc/profile will call ~/.bash_profile which will call ~/.bashrc which will call /etc/bashrc
+
+.bash_logout - It will run when the user is logged out.
+
+10)Globbing
+* - matches zero or more characters.
+? - match single character
+ls [Uu]*.txt - matches anyone of the character in the list,case sensitive.
+
+
+11)Quoting
+a)echo "The currently logged user is $LOGNAME"
+The currently logged user is root
+" " - It contains strings and any variables or commands within them gets evaluated.
+b)echo 'The currently logged user is $LOGNAME'
+The currently logged user is $LOGNAME
+' ' - Anything within this gets treated literally,disables any special character functionality.
+c)echo "Hey,Can i borrow \$3.50"
+\ - Backslash,escape character.It disables any special character functionality that immediately follows it.
+
+12)Formatting Commands
+root@User-VM:/opt#
+here root is the user that currently logged in
+@ symbol seperate the root and hostname
+User-VM is the hostname(name of the computer)
+/opt is the currently working directory.
+# indicates root user
+$ indicates regular user
+
+13)Locate,Find and whereis
+a)Locate - it will search local database of files and directories in our system.The data will be updated on daily basics.
+b)find - find will search the filesystem itself.
+c)whereis - locates binary,manual pages and source command.
+
+14)man -manual page command.
+whatis - command that lists summarises and related man pages based on search item.same info with man -f.
+apropos - it will search the man page with the keyword that we provide.same we can achieve using man -k.
+
+15)Exit or Control + D - Terminating a session
+
+16)File command will tell what type of file/directory it is.
+17)Find and locate
+a)locate- 
+It is faster than find.But it is not in real time.
+b)find -It searches for files and directories in real time.find is very powerful and have many options.
+18)tar options
+c Create a tar archive
+x Extract files from the archive
+t Display the table of contents
+v Verbose
+z Use compression
+f file Use this file
+19)Wild Cards
+* - Matches 0 or more characters
+? - Matches exactly one character
+[a-g]* - Matches all files that starts with a,b,c,d,e,f,g
+20)Comparing the contents of the file
+diff file1 file2 						//Compare two files
+sdiff file1 file2						//Side by side comparison
+vimdiff file1 file2						//Highlight differences in vim.
+21)Grep command
+-i 			Perform a search ignoring the case
+-c 			Count the number of occurrences in a file
+-n 			Precede output with line number
+-v 			Invert match.Print lines that don't match 
+a)cat files1.txt
+  this is just another file
+  this is for demo purpose
+  I need to check...!!!
+  this is not happening
+b)grep this is files1.txt				//For checking the files which contains "this is" as content.
+grep: is: No such file or directory
+files1.txt:this is just another file
+files1.txt:this is for demo purpose
+files1.txt:this is not happening
+22)Question
+(1)Find all names "systemd" in /etc/passwd				grep systemd /etc/passwd
+(2)Print only "systemd"									grep systemd /etc/passwd | cut -d: -f1,5
+(3)Print in alphabetical order							grep systemd /etc/passwd | cut -d: -f1,5 | sort
+(4)Print in a tabular format 						    grep systemd /etc/passwd | cut -d: -f1,5 | sort | tr ":" " " | column -t
+23)Copying files over network
+a)scp - Securec copy
+b)sftp - SSH file transfer protocol
+24)Control C - Kill the foreground process.
+Control Z - Suspend the foreground process.
+25)Kill command
+Kill will be taking by default 15(SIGTERM)
+kill -9 is nothing but SIGKILL
+
+
+
+
+
+
+
+
+  
+
+
+ 
+5)cd .. - to go back to immediate previous directory/parent directory
+6)mkdir - When you need to create a folder or a directory. 
+7)rmdir - To delete a directory. But rmdir can only be used to delete an empty directory.
+8)rm — Use the rm command to delete files and directories. But rm cannot simply delete a directory. 
+Use “rm -r” to delete a directory. In this case, it deletes both the folder and the files in it.
+9)touch — The touch command is used to create a file. It can be anything, from an empty txt file
+ to an empty zip file.
+10)cp — Use the cp command to copy files through the command line. It takes two arguments: The first
+ is the location of the file to be copied, the second is where to copy.
+11)mv - Use the mv command to move files through the command line. We can also use the mv command to rename
+ a file. For example, if we want to rename the file “text” to “new”, we can use “mv text new”. 
+ It takes the two arguments, just like the cp command.
+12) locate — The locate command is used to locate a file in a Linux system, just like the search command 
+in Windows. Using the -i argument with the command helps to ignore the case (it doesn't matter if it is
+ uppercase or lowercase). 
+13)
+
+17)

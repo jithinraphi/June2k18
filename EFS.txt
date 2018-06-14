@@ -1,0 +1,27 @@
+EFS
+1)AWS offers 3 types of storage :- File,Storage and block.
+a)Block Storage contains Amazon EBS and EC2
+b)Object Storage contains S3 and glacier
+c)File Storage contains EFS
+Using EFS we can attach to 1-10000's of EC2 instance to it
+2)Design of EFS
+a)Simple
+It is fully managed service
+Seamless integration with existing tools and apps
+Simple pricing = simple forecasting
+
+b)Elastic
+File system grow and shrink automatically as you add or remove files
+No need to provision storage capacity or performance
+You need to pay for the storage space you use,with no minimum fee.
+c)Scalable
+Filesystem can goes to petabytes of capacity
+
+These 3 components are the foundations of high availability and high durability.
+It is highly available and highly durable.Data is spread across multiple AZ.
+
+3)When to use EFS?
+Requires multi-attach 
+Multi AZ availability/durability
+GBs/Throughput
+Requires automatic scaling(grow/shrink)of storage 

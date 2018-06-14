@@ -1,0 +1,161 @@
+Chef Praticals
+1)Update your node configuration
+a)You ran knife bootstrap to associate your node with the Chef server and do an initial check-in.
+Bootstrapping is a one-time process.
+b)The knife winrm command enables you to update your node's configuration when your cookbook changes.
+
+c.1)Add template code to your HTML(Inside cookbook/learn_chef_apache2/template folder)
+change index.html.erb
+<html>
+  <body>
+    <h1>hello from <%= node['fqdn'] %></h1>
+  </body>
+</html
+
+Here The <%= %> syntax enables you to provide placeholders in your template file. Placeholders are replaced
+with their values when chef-client runs.
+c.2)Update the cookbook's version metadata
+Your cookbook's metadata.rb file holds the cookbook's version
+Update your cookbook's version from 0.1.0 to 0.2.0.
+c.3)Upload your cookbook to the Chef server
+knife cookbook upload learn_chef_apache2	//Here learn_chef_apache2 is the cookbook name
+Till this step we need to run on chef workstation.'
+
+c.4)Run the cookbook on your node
+Now that your updated cookbook is on the Chef server, you can run chef-client on your node. The chef-client
+command pulls from Chef server the latest cookbooks from the node's run-list and applies the run-list to 
+the node.
+sudo chef-client 		//run this command from the chef node.
+
+2)Run chef-client periodically
+f)The take aways from this module
+f.1)use community cookbooks from Chef Supermarket.
+f.2)use Berkshelf to resolve cookbook dependencies.
+f.3)use a role to define your node's attributes and its run-list.
+a)Get the chef-client cookbook
+On Linux, the chef-client cookbook sets up chef-client to run as a service. On Windows, this cookbook
+sets up chef-client to run as a scheduled task.
+Berkshelf is a tool that helps you resolve cookbook dependencies. Berkshelf can retrieve the cookbooks that your cookbook depends on and 
+can upload your cookbooks to your Chef server. Berkshelf comes with the Chef DK.
+
+You need to create a configuration file that tells Berkshelf which cookbooks you want and where they're located
+a1)create a file named Berksfile and add these contents(inside learn-chef folder)
+source 'https://supermarket.chef.io'
+cookbook 'chef-client'
+
+Your Berksfile specifies that you want the chef-client cookbook and to pull cookbooks from the public Chef
+Supermarket server.
+berks install to download the chef-client cookbook and its dependencies
+sudo berks install
+
+Berkshelf downloads the chef-client cookbook and its dependent cookbooks to the ~/.berkshelf/cookbooks directory.
+sudo berks upload //To upload chef-client cookbook and its dependencies to Chef server. 
+
+b)Create a role
+chef-client is run is controlled by two node attributes (source code):
+
+node['chef_client']['interval'] – interval specifies the number of seconds between chef-client runs. The default
+value is 1,800 (30 minutes).
+node['chef_client']['splay'] – splay specifies a maximum random number of seconds that is added to the interval.
+Splay helps balance the load on the Chef server by ensuring that many chef-client runs are not occurring at
+the same interval. The default value is 300 (5 minutes).
+Roles are stored as objects on the Chef server. 
+Created a folder called role and inside that created a web.json(which is role)
+{
+   "name": "web",
+   "description": "Web server role.",
+   "json_class": "Chef::Role",
+   "default_attributes": {
+     "chef_client": {
+       "interval": 300,
+       "splay": 60
+     }
+   },
+   "override_attributes": {
+   },
+   "chef_type": "role",
+   "run_list": ["recipe[chef-client::default]",
+                "recipe[chef-client::delete_validation]",
+                "recipe[learn_chef_apache2::default]"
+   ],
+   "env_run_lists": {
+   }
+}
+
+b1)knife role from file web.json 		//command to upload your role to the Chef server.
+As a verification step, you can run the below command to view the roles on your Chef server.
+knife role list
+web
+b2)knife role show web					//to view the role details
+b3)knife node run_list set node1-ubuntu "role[web]"   		//The final step is to set your node's run-list.  					
+	
+c)How to clean up your environment
+c1)Delete the node from the Chef server
+knife node delete node1-ubuntu --yes			//to remove the node's metadata from the Chef server
+knife client delete node1-ubuntu --yes			//to delete the entry (including the public part of the 
+												RSA key pair) from the Chef server's API client list.
+c2)Delete your cookbook from the Chef server
+knife cookbook delete learn_chef_apache2 --all --yes		//learn_chef_apache2 is the cookbook name
+If you omit the --all argument, you'll be prompted to select which version to delete.
+c3)Delete the role from the Chef server
+knife role delete web --yes
+
+----------------------------------------------------------------------------------------------------------
+3)Apply a cookbook locally
+3.a)Test Kitchen enables you to run your cookbooks in a temporary environment that resembles production.
+a.i)kitchen create - Test kitchen creates an instance of your virtual environment, for example,
+an Ubuntu virtual machine.
+a.ii)kitchen coverage - Test Kitchen applies your cookbook to the virtual environment.
+a.iii)kitchen login - Test Kitchen creates an SSH session into your virtual environment.
+a.iv)verify - you manually verify that your virtual environment is configured as you expect.
+a.v)Test Kitchen shuts down and destroys your virtual environment.
+3.b)Examine the Test Kitchen configuration file
+When you use the chef generate cookbook command to create a cookbook, Chef creates a file named .kitchen.yml in the root directory of your
+cookbook. .kitchen.yml defines what's needed to run Test Kitchen, including which virtualization provider to 
+use, how to run Chef, and what platforms to run your code on.
+This file(.kitchen.yml) will be present inside cookbook(learn_chef_apache2) folder.
+3.b.i)
+Here's how the .kitchen.yml file breaks down.
+
+b.i.a)driver- specifies the software that manages the machine. We're using the Vagrant Test Kitchen driver 
+(list of other popular drivers). The Vagrant driver works with VirtualBox by default.
+b.i.b)provisioner- specifies how to run Chef. We use chef_zero because it enables you to mimic a Chef server 
+environment on your local machine. This allows us to work with node attributes and other Chef server features.
+b.i.c)transport- specifies how to execute commands remotely on the test instance. WinRM is the default transport
+on Windows; SSH is the default on all other operating systems.
+b.i.d)verifier- specifies which application to use when running automated tests. You'll learn more about automated
+testing in a future module.
+b.i.e)platforms- specifies the target operating systems. We're targeting just one – Ubuntu 14.04.
+b.i.f)suites- specifies what we want to apply to the virtual environment. You can have more than one suite. 
+We define just one, named default. This is where we provide the run-list, which defines which recipes to run 
+and in the order to run them. Your run-list contains one recipe – the learn_chef_apache2 cookbook's default 
+recipe.
+ 
+3.c)Create the Test Kitchen instance
+Before creating the test kitchen,we need to install the following packages
+1)Vagrant 2)VirtualBox
+sudo apt install vagrant
+vagrant init
+vagrant up		//This can be perfomed only after installing virtualbox in the system.
+2)VirtualBox
+sudo apt install virtualbox
+
+kitchen create 		//For creating the test kitchen.
+kitchen destroy 	//If you need to destroy your instance before you complete this module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+Dive into python
+1)How to change the default python version to 3?
+Place this into ~/.bashrc or ~/.bash_aliases file:
+alias python=python3
+source ~/.bashrc
+2)In python,when we need a function,just declare it.
+Every python function returns a value.If the function ever executes a return statement,it return that value
+otherwise,it will return none,the python null value.
+b)As soon as you have a named argument, all arguments to the right of that need to be named arguments, too.
+c)Every function deserves a decent docstring.
+d)Triple quotes signify a multi-line string.It is used for commenting purpose.
+e)Every function deserves a decent docstring.(docstring is nothing but documentation string..similiar to 
+comments)

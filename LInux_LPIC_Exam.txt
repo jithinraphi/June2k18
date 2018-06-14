@@ -1,0 +1,319 @@
+Linux LPIC Level1 Exam
+1)whoami - To check the current user who logged in
+2)passwd <username> - To change the password of the non root user.
+3)passwd - To change the password of the root user.
+4)useradd <username> - To add new user.
+5)userdel -r <username> - To delete a user from the system. -r is used to delete the user home directory.
+6)In VI editor
+:w! - Saves the files without closing.
+7)usermod -G <groupname> <username> - To add user to a particular group.
+8)groups <username> - To check the user is added to any particular group or not
+9)w - It will display all logged in users of the system.
+10)tail - It shows the last 10 lines in a file.
+11) cat /etc/issue - To check the Linux/unix distribution which is installed on the machine.
+12)groupadd <groupname> - For adding new group.
+13)chown <username>:<groupname> foldername - For changing the permission of a particular folder.
+14)cron is stateless,it doesn't remember the interval in which it is executed.
+15)We use httpd for centos machine and apache2 for ubuntu machine.
+16)updatedb - For updating the database.
+17)date - echo the date and time to the terminal.
+18)df -h - Show all mount and drive space.
+19)free -m - List the free memory on the system.
+20)crontab -e - For setting the cron job.
+21)find /home  -name testfile.txt - To check a file part of one folder and the filename is testfile.txt
+22)find / -iname testfile.txt - To check a file named testfile.txt with case insensitive. 
+23)dpkg -l - To list all the packages which are currently installed on the system.
+24)Different vi modes are insert mode(editing the file),command mode(allow us to send commands in the form 
+of individual letters such as i key and a key),column mode(ex mode-which used to save and manipulate files).
+25)vim - vi improved text editor.
+In VI editor,we can use the different commands for the following purposes.
+a)40G - It will goto line number 40
+b)yy - copy(yanking)
+c)P/p - paste
+d)P - It will paste the file one line above the cursor.
+e)p - It will paste the file one line below the cursor.
+f)u -undo
+g)5yy - It will copy the next 5 lines.
+h)5dd - It will delete the next 5 lines.
+i)Command mode - It is used to navigate files.
+j)In order to goto insert mode,we should be already in command mode.
+k)In order to go back to command mode from insert mode,we use "a"
+l)R will replace the text will the new content.
+m)In order to goto ex mode,we need to go from command mode.
+n):q,:wq etc - These are part of ex modes. 
+o):%s/Hostkey/yahoo -  It will replace the first occurrence of Hostkey with yahoo.
+p):%s/Hostkey/yahoo - It will replace all the occurrence of Hostkey with yahoo.
+q):r /etc/passwd -loading a file(loading the contents into a text file).
+r)/linux (will search for all linux from top down)
+s)?linux (will search for all linux from bottom up)
+t):!ls /home/user - To display the contents of /home/user in VI mode.
+
+26)wc - For checking the number of lines,word count and size of the file 
+wc -l - It will only display the number of lines.
+27)split -l 3 file - It will the split the content of the 'file' into different files,where each file
+contains 3 lines of code.
+28)
+a)at * > myfile.txt  //It will display the contents of all files and copy to a new file named myfile.txt.
+If we use >,it will override the content to that particular file.
+but if we use >>,then it will append the content to that particular file.
+b)> - It is redirect symbol.
+c)ls heiwth 2>a abc.txt  - Inorder to redirect standard error to a file we use 2>,Here we are redirecting the
+standard error of heiwth to a file named abc.txt.
+d)cat file file2 file3 > mystdoutput 2>&1  - It will redirect the output of the file and standard error of 
+file to the same file named mystdoutput.
+e)set -o noclobber  	//It will restrict to override the contents of a file
+cat a > file
+-bash: file: cannot overwrite existing file
+f)set +o noclobber      //Back to normal
+g)&> redirects both standard output and standard error to the same place.
+h)Redirects are bidirectional,whereas pipes are unidirectional
+i) &> redirects both standard output and standard error to the same place.
+29)Pipes(|) - It will take the output from one command and give it as input to another command.
+30)
+a)grep - It will match the pattern.
+b) grep hello testf		//It will return all the hello which are present in the testf file.
+c) grep ^hello testf 	//All the lines that begins with hello.
+d)grep -c ^hello testf 	//It will display word count of lines which begins with hello.
+e)grep hello$ testf		//All the lines that ends with hello.
+f)grep [abcd] testf		//It will search for all the letters such as a,b,c,d in the file testf.
+g)grep -f filename testf //It will check for all the file content which is present in filename in the 
+file testf.
+h)egrep - egrep is used for extended regular expression.
+egrep -i 'Hello|World' testf 		//It will search for all the files either contain Hello or world in 
+									the file testf.
+egrep -v 'Hello|World' testf 		//It will return for all the files which doesn't contain Hello or World in it.
+egrep 'Hello|World' testf | grep -v jeff //It will check for all the lines which contain either Hello or World
+											and not jeff in the file testf.
+egrep is nothing but grep -E
+fgrep is nothing but grep -F
+If you fgrep, in that case it will check for the format,it won't take any regular expression.
+fgrep Hello$ testf 		//In this case,it will check for all the content with Hello$ in the testf file.
+31)cut 
+cut -f1 -d: /etc/passwd 	//It will only display the users which are present inside that file
+32)sed - It is nothing but find and replace
+sed 's/parttime/fulltime' team		//It will replace parttime with fulltime in the file team.
+sed 's/fulltime/w fulltime.txt' team //It will replace with fulltime and write those content to fulltime.txt.
+33)tee command - read from standard input and write to standard output.
+By default,tee command overrides the command.
+ls | tee -a std			//In this case,it won't overrides instead it will append the content of the std.
+34)Lab One
+
+Copy the contents of /etc/passwd file into ~/myfile.txt.
+Display into standard output only the user names in the file, the first column.
+Count the number of lines/users that are in the file.
+Count the number of words in the file.
+Use the split command to generate 256 byte split files of ~/myfile.txt.
+Show the differences in the first two files generated using the appropriate command
+cat /etc/passwd > myfile.txt
+cut -f1 -d: myfile.txt
+cat myfile.txt | wc -l
+cat myfile.txt |wc -w
+split -b 256 myfile.txt
+diff xaa xab
+
+35)Lab Two
+
+On the command line instruct the shell to read from the current input until "stop" is inputted.
+Replace all instances of "root" in myfile.txt with "linuxroot" using sed the stream editor.
+Using grep for all for all words that start with an r have two wild card characters following and end with t.
+Grep all lines that have numbers between 5-9.
+cat << stop - enter in any command three times then enter stop.
+sed -i 's/root/linuxroot/g' myfile.txt (s is for replace and g means every occurrence [globally])
+grep r..t myfile.txt
+cat myfile.txt | grep [5-9]
+
+36)cut -c3-6 test.txt		//It will display the contents of 3-6 characters of each line present in test.txt
+cat test.txt | sort -n		//To display the content in the alphabetical order.
+cat test.txt | sort -n | uniq	//to remove the duplication of lines.
+37)
+a) /var - It is a system level directory.It contains lot of information about administration level 
+architecture.All logs will be present inside this folder./var/lib contains library files also.
+b) /sys - It contains all the system directories or file system.
+c) /proc - Everything in linux is a process.
+d) /dev - List of all devices that are present or can be connected to the system.
+/dev/null- Anything we send to it will disappear.
+38)
+a)lsmod - It will display all the modules that are currently installed on the system.
+b)lspci - It will give all the information about the pci devices.
+c)lsusb - It will give all the information about the usb devices.
+39)
+a)modprobe - It will display the modules that are available on the system.
+It is used in Ubuntu 12.04 or CentOS 6 or below versions.
+40)Hot and cold plug devices
+a)Cold plug devices - These are devices that can be connected/disconnected when the system is powered off
+Ex are CPU,memory,Non-USB storage devices.Each of these devices will be present as a file in the /dev 
+directory.Only kernel can talk to cold plug devices through a module/driver or built-in support.
+b)Hot plug devices - These are devices that can be connected/disconnected anytime that have either a built-in
+support or a loadable module avaiable for them.
+Ex: USB Harddrive,USB MemoryStack,Parallel or serial printers.
+41)File System Hierarchy
+/etc- host system specific configuration file
+/lib- central location for all the library files
+/opt - optional file 
+/proc -process directory
+/sbin - system binary files
+/usr - read only user data
+/var - variable files,which remain in its state even after booting
+42)Init and Telinit
+a)sudo telinit 1		//It will move to single user mode.It doesn't have any GUI and it have limited fn.
+b)telinit 5		//It will take you to the normal mode.
+c)init is the primary process that is the parent to all other processes. It starts at boot and checks
+out your /etc/inittab and a bunch of other settings.
+d)telinit is a smaller tool that informs init when it needs to switch runlevels. So you can use "telinit" 
+to "tell init" that it needs to switch runlevel.
+43)cp -a source destination 		//Here it will copy and archive to the destination.
+cp -u source destination	//Here it will only copy if there is some change in the
+destination or file is not present.
+mv -i file1 file2 		//It will give warning before overriding the contents of file1 to file2.
+44)gzip - It is used to compress the file.
+gunzip - It is used to decompress any files which has extension .gz
+45)Links are of two types 
+Softlinks and hardlinks
+(i)Hardlinks - It cannot be used across file system.
+Hardlinks are created using ln command.
+It refer the core file in the system.It will refer the real files.
+If you want to delete the file,we have the delete both the locations.
+In hardlinks,if you update one location it will automatically updated in the other location also.
+Hardlink will create actual file entry in the file system.
+Syntax:
+ln [option] <source> <link_name>
+ln /etc/hosts host_link_file
+If you change in one file,it will automatically gets reflected on the other file too.
+ln -i /var/www/html host_link_file		//In order to change the location of the link(it will ask to replace)
+ln -f /etc/hosts softlink_test			//In order to change the location of the link(it won't ask to replace)
+
+(ii)Softlinks - These are referred to a symbolic links.Softlinks are the shortcuts to the location.
+It can be used across file system.
+Contents of the symbolic links points to the linked file that is referred.
+Softlinks are just reference or alias to the another location.
+ln -s <source> <link_name>
+ln -s /etc/hosts softlink_test
+ln -is /var/www/html softlink_test		//In order to change the location of the link(it will ask to replace)
+ln -fs /etc/hosts softlink_test			//In order to change the location of the link(it won't ask to replace)
+46)
+(i)newgrp <groupname>
+Once it is set,if you create a new file,that file will be added to this group.
+(ii)umask - When a user create a file/folder,it has some basic configuration by default.
+umask 300 it will reduce the current permission with 300
+umask 000 to reset the permission to the default
+47)find,locate,whereis and which
+a)find - It will only search files and directories where we do have permission to see.
+find / -name *.txt			//It will search for all files that ends with .txt
+find /etc/ -perm 777		//To check files that have 777 permissions in the /etc file
+find /etc/ -size 1M			//To check the files that has size above 1M in the /etc file
+48)
+dd if=/dev/xdev1 of=mbr.bak bs=512 count=1	//It will copy the first 512 bytes contents of /dev/xdev1 to mbr.bak
+49)Exercise: Exercise: The GUNZIP Command
+(i)Using the appropriate 'gzip' command and options, create a compressed file called 'myetc.gz' from the files 
+copied in Step #1. Show the newly created file and it's attributes.
+gzip -c * > myetc.gz
+(ii)gzip -l myetc.gz		//To check the compression ratio of the file myetc.gz
+50)top
+It displays the linux running processes and tasks.
+It will update every 3 seconds.
+51)nice and renice 
+(i)-20 is the highest priority and 19 is the lowest priority
+nice - allow you to launch a program with specified priority
+Default priority of nice when not given is 10.
+52)Lab 1
+(i)Create a file called MyLab.out. Append the currently running processes (including process IDs) on the 
+system to that file.
+ps aux > MyLab.out
+(ii)Using the appropriate process command, obtain the number of running processes on the system and append
+that value to your file created above.
+ps aux | wc -l >> MyLab.out
+(iii)Display the top command on your terminal but add the appropriate command parameter that will cause it
+to update 10 times and then exit.
+top -n 10
+(iv)Using the 'top' command with the appropriate option, list ONLY the current processes running as the user
+id 'root'.
+top -u root
+(v) Find the current Process ID of the bash shell your user is logged in as. Display JUST that PID in the top
+command in the console and then exit the program.
+ps aux | grep bash
+53)Exam
+(i)ps aux		// It displays the running process on the entire system.
+(ii)top -d 5.5	// The process list updated every 5.5 seconds
+(iii)The file "/etc/ld.so.conf" contains system wide library path locations
+54)
+a)which - It will show the full path of the command.
+b)which git	/usr/bin/git	//It will show the full path of the git
+c)whereis - It will display the complete path and where it is located in the man page also.
+d)locate		//It will display the data that are part of the database.
+e)find /home/ -perm 755	//To check all file in the /home directory with the permission 755
+f)find / -mtime -1	//Using this command we can find the files that has been modified in last 1 day.
+g)In your home directory create three files that end with .txt. Now use find to find all files that end with
+.txt in your home directory and then delete them as part of the same command using -exec.
+touch file1.txt; touch file2.txt; touch file3.txt
+find . -name '*.txt' -exec rm {} \;
+h)In linux,there are multiple file system,the most common file systems are
+h.1)ext file system 
+ext2fs,ext3fs,ext4fs
+ext4fs is the next generation file system.
+we mainly use ext3fs,which has journaling in it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

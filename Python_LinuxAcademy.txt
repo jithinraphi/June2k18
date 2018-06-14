@@ -1,0 +1,274 @@
+Python3 from linux academy
+1)History and benefits of Python
+First appearance: 1991
+Creator: Guido van Rossum
+a)Benefits of Python3
+Object oriented scripting language
+Dynamic and strong type system
+Functional concepts(map,reduce,filter etc)
+Whitespace delimited
+2)In python,comments follow the below pattern
+a)Single comment - #
+b)Block of comments -
+"""
+This is not a block comment,
+but it will still work when you really need
+for some lines of code to not execute.
+"""
+
+3)Common Data types
+a)Strings
+Some examples of Strings
+x="pass"
+y="word"
+print(x+y)			//Output is password
+z="aj"*4
+print(z)			//ajajajaj
+b)Numbers(int and float)
+c)Lists
+Lists are mutable,it means we can change the value of it.
+my_list = [1, 2, 3, 4, 5]
+>>> my_list[0:2]					//0 to 2nd index,but 2nd index is not included.
+[1, 2]
+>>> my_list[1:0]					/1 to last,zeroth index is not included.
+[2, 3, 4, 5]
+>>> my_list[:3]						/till 3rd ie.,till 2nd index
+[1, 2, 3]
+>>> my_list[0::1]					//zeroth to last with the increment of 1
+[1, 2, 3, 4, 5]
+>>> my_list[0::2]					//zeroth to last with the increment of 2
+[1, 3, 5] 
+
+(i)If we want to add to a list we can use the .append method. 
+>>> my_list.append(6)
+>>> my_list.append(7)
+>>> my_list
+[1, 2, 3, 4, 5, 6, 7]
+
+(ii)Removing items from a list based on value can be done using the .remove method: 
+
+>>> my_list.remove('b')
+>>> my_list
+['a', 'c', 'd']
+
+d)Tuples
+It is immutable sequence type.
+We create tuples using parenthesis (( and )) and at least one comma (,): 
+>>> point = (2.0, 3.0)
+We can use tuples in some operations like concatenation, but we can’t change the original 
+tuple that we created. 
+
+4)Conditionals and Comparisons
+#!/bin/bash
+name = "Jithin"
+a = len(name)
+print(a)
+if a >= 7:
+        print("It is too long")
+elif a <=5:
+        print("It is ok ok")
+elif a ==6:
+        print("It is correct")
+else:
+        print("It is too short")
+Output:
+6
+It is correct
+
+b)While condition
+count = 0
+while count < 10:
+     if count % 2 == 0:
+         count += 1
+         continue
+     print("We're counting odd numbers:",count)
+     count += 1
+
+c)For condition
+#!/bin/bash
+colours = ['blue', 'green', 'red', 'orange']
+for color in colours:
+        print(color)
+jithin = ['abc', 'def', 'ghi', 'jkl']
+for a in jithin:
+        print(a)
+for color in colours:
+        if color == 'blue':
+                continue
+        elif color == 'red':
+                break
+        print(color)
+		
+In the above example,we have used both for loop as well as if loop.
+
+d)Another Example
+#!/bin/bash
+list_of_points = [(1,2),(2,3),(4,3)]
+for x,y in list_of_points:
+        print("x:",x,"y:",y)
+
+e)Logic Operations
+(i)Not - It is used for negation
+(ii)Or - It will work if either of the two statements are true
+(iii)And - It will work only if all the statements are true
+
+f)Exercise 1
+#!/bin/bash
+first_name = "Jithin Justice"
+last_name = "Raphi"
+age = 27
+birth_date = "December 13"
+print("My name is ",first_name, last_name)
+print("I was born on ",birth_date," and I'm ",age, " years old.")
+
+Output:
+My name is  Jithin Justice Raphi
+I was born on  December 13  and I'm  27  years old.
+
+4)General Knowledge
+a)Using a `while` loop with a condition that will always return `True` will create an infinite loop. There is
+no `do...while` loop in Python
+b)REPL stands for Read Evaluate Print Loop, and it describes how the code that is typed in is executed.
+c)`None` is the constant that represents nothingness in Python. 
+d)In Python 3, integer division (`2 / 3`) will return a float.
+e)Any immutable type can be used as a key in a dictionary. Lists are mutable because you can add or remove
+items from them.
+f)You exit the REPL by either running the `exit` function, by using parenthesis, or by using Ctrl-D. 
+
+5)Basic Scripting
+a)Reading User input
+(i)Example
+#!/bin/bash
+name = input("What is your name ")
+birthdate = input("What is your birthdate ")
+age = int(input("what is your age:"))
+print("My name is " ,name, " and was born on ",birthdate )
+print("Half of my age is ",age/2
+
+Output:
+What is your name Jithin 
+What is your birthdate Dec 13
+what is your age:27
+My name is  Jithin   and was born on  Dec 13
+Half of my age is  13.5
+
+b)Function Basics
+#!/bin/bash
+def print_name(name):
+        print("Name is ",name)
+print_name("Jithin")
+
+Output:
+Name is  Jithin
+
+#!/bin/bash
+def add_two(num):
+        return num * 2
+result = add_two(4)
+print (result)
+
+In python,by default function doesn't return anything.
+
+c)Using function in Scripts
+#!/bin/bash
+def gather_info():
+    height = float(input("What is your height? (inches or meters) "))
+    weight = float(input("What is your weight? (pounds or kilograms) "))
+    system = input("Are your mearsurements in metric or imperial systems? ").lower().strip()
+    return (height, weight, system)
+def calculate_bmi(weight, height, system='metric'):
+    if system == 'metric':
+        bmi = (weight / (height ** 2))
+    else:
+        bmi = 703 * (weight / (height ** 2))
+    return bmi
+while True:
+    height, weight, system = gather_info()
+    if system.startswith('i'):
+        bmi = calculate_bmi(weight, system='imperial', height=height)
+        print("Your BMI is ",bmi)
+        #print(f"Your BMI is {bmi}")
+        break
+    elif system.startswith('m'):
+        bmi = calculate_bmi(weight, height)
+        print("Your BMI is ",bmi)
+        break
+    else:
+        print("Error: Unknown measurement system. Please use imperial or metric.")
+
+Output:
+What is your height? (inches or meters) 1.705
+What is your weight? (pounds or kilograms) 69.9
+Are your mearsurements in metric or imperial systems? metric
+Your BMI is  24.045200849665893
+
+d)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

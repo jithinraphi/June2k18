@@ -1,0 +1,170 @@
+Ansible
+1)What is Ansible?
+Change management,provisioning,Automation and Orchestration.
+a)Change management - Define a "system state"
+b)Provisioning - prepare a system to make it ready.Transition from one state to another.
+c)Automation - Define tasks to be executed automatically.
+d)Orchestration - Automation is used on a single system whereas orchestration takes the automation and
+coordinates the process between multiple system.You cannot have orchestration without having automation.
+-----------------------------------------------------------------------------------------------------------
+2)Why Ansible?
+clean,no agents,no database,no residual software,no complex upgrades.
+-----------------------------------------------------------------------------------------------------------
+3)YAML - YAML Ain't Markup Language
+Ansible galaxy - Community-based repository to browse,download other playbooks and all.
+-----------------------------------------------------------------------------------------------------------
+4)Ansible Architecture and Process flow
+a)Control server
+b)Remote server
+
+a)Control Server
+It deploys all your plays and playbooks.It should contain ansible installed on it.It will work all the 
+ansible related tasks.
+Python 2.6+ is required.
+OS should be unix/linux based environment.
+Windows is not supported.
+
+b)Remote Server
+Python 2.5+ is required.
+SSH should be installed and running
+Windows is supported.
+
+c)Components of Ansible
+There are 5 different component of python.They are
+(i)Inventory
+It is place where we define our groups,host-level variables and roles.
+(ii)Playbook
+Playbooks are the glues that bring everything together.
+playbooks are the files that we are going to create to accomplish the task or set of tasks.Each play is
+grouped in a playbook.
+play is set of tasks using modules,executed on defined set of hosts.
+(iii)Modules
+Modules are the command center of the system.Each modules have set of actions that you can perform.
+Programmed unit of work to be done.
+(iv)Ansible config
+It sets the global variable configuration for ansible.
+(v)Python
+Ansible takes all the components and pushes it using python component to build a package to deliver to the
+system.
+
+d)Variables are also crucial in ansible.There are three types of variables in ansible.
+(i)Host variable - We define these variables in the inventory files where we define the host.
+(ii)Fact variable - These are defined when we gather fact data on the host. 
+(iii)Dynamic variables - These are created during the course of your playbook and are destroyed afterwards.
+
+e)Execution types are of two types :- Remote and local.
+(i)Remote - The package is deployed to the remote system and then executed on the remote system.
+Python packages are send to the remote system and it is executed on the remote system and it returns the 
+output in json format to the control machine or server.
+(ii) - Local ansible server is executing the package.
+
+f)Basic Ansible command
+ansible <system> -i <inventoryFile> -m<module> -u<username> -k<[password prompt> 
+-v(-vv debug level2 /-vvv debug level3)
+-----------------------------------------------------------------------------------------------------------
+5)Ansible inventory and configuration
+a)Inventory Fundamentals
+We can have two separate inventory files for web and test development teams.We don't want to create one long
+inventory file for both the teams.
+Inventory features:- 
+(i)Behavioral parameters - These are conf. we can apply to system and group of systems.Thinks like ssh,users 
+and passwords or private key files.
+(ii)Group our system together,things like database or production webservers.
+(iii)Groups of groups - Datacenter west,datacenter east
+(iv)Assign variables- Assign variables to our system and groups.
+(v)scaling out using multiple files
+(vi)static/dynamic
+In the inventory file,we can define parent/child group or variable.
+[db]
+172.*.*.*
+[datacenter:children]				//This is the syntax for parent group
+db
+[datacenter-west:vars]
+ansible_ssh_user=ansible_user
+ansible_ssh_pass=password
+ntp-server=5.6.7.8
+
+b)Variable file syntax
+The way to detect YAML files are using --- which is not compulsory.
+It is key: value pair 
+Order of precedence
+(Group_Vars) All
+(Group_Vars) GroupName
+(Host_Vars) HostName
+
+c)Configuration Settings Order-of-operations
+(i)$ANSIBLE_CONFIG
+(ii)./ansible.cfg
+(iii)~/ansible.cfg
+(iv)/etc/ansible.ansible.cfg
+-----------------------------------------------------------------------------------------------------------
+6)Ansible Modules
+a)Modules are of three types
+(i)Core - Modules that are supported by ansible itself.
+(ii)Extras - Modules that are created by external communities or companies,but are included in the
+distribution and may not be supported by ansible.
+(iii)Depricated - When new module is going to replace it or new module is more preferred.
+
+ansible-doc -l			//To display the complete list of modules that are available in ansible.
+ansible-doc <module_name>		//To get more information about that module.
+b)
+(i)copy module - Copies a file from local box to remote system.
+(ii)fetch module - pulls a file from remote host to local system.
+(iii)apt module 
+manages installed applications on debian based system.
+can install,update or delete packages.
+can update the entire system.
+(iv)yum module
+manages installed applications on Redhat based system.
+can install,update or delete packages.
+can update the entire system.
+c)Host/Group Target pattern
+(i)OR (group1:group2)
+(ii)NOT (!group2)
+(iii)Wildcard(web*.ex.com)
+(iv)Regex(~web[0-9]+)
+------------------------------------------------------------------------------------------------------------
+7)Play and Playbooks
+a)Plays map host to tasks.
+A play can have multiple tasks.
+A playbook can have multiple plays.
+b)ansible-playbook <playbook filename>			//For executing ansible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+

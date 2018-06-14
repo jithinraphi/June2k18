@@ -1,0 +1,54 @@
+Chef
+1)Chef is Infrastructure as Code
+(a)Chef Workstation,Chef Server and Chef Node are the physical entities of Chef.
+(b)Chef client will be present in the Chef node and it allows the interaction of Chef Server and Chef node.
+(c)Knife is a command line tool which is used to interact between your chef workstation and chef server.
+(d)Resource is anything you want to change/configure in the host.
+Resource is the basic building block of chef.
+Resources can be file,directories,Users and groups,Packages and Services.
+(e)Recipe - Collection of Resources is Recipe which ensures the system is in desired state.
+Chef has its own Domain Specific Language(DSL) and it is subset of Ruby.
+(f)Cookbooks - Collection of Recipes just for one entity.Fundamental unit of Configuration and Policy distribution.
+(g)Chef Development Kit (Chef DK)needs to be installed on Chef Workstation.
+
+2)
+(a)chef-apply hello.rb	//It just runs the recipe locally.
+(b)Chef workflow - Read,test and repair.
+(c)Chef extension should be ruby,then only it can understand.
+(d)In Chef,we write in DSL and chef converts DSL to Ruby by itself.
+(e)Whatever we specifies between do and end that is going to change the state of the server.
+In chef,we need to tell what to install and not how to install.
+Chef will take care of how it installs the particular resource or whatever.
+Template is same as file resource,but it has different actions.
+(f)Run list - It is the ordered set of recipes and roles that chef client will execute on a node.
+(g)Default run list is do nothing.
+(h)Resources are executed in order.
+(i)It will be starting from first to last in sequence.
+3)Attributes
+Attributes are used by chef-client to understand:
+(i)Current node of the state
+(ii)What the state of the node after the previous chef-client run
+(iii)What will be the state of the node after the current chef-client run
+
+4)
+(i)Organization is a place where we can logically separate our chef architecture.Organization cannot be 
+talked to each other.
+Bootstrap is booting of the machine to the infrastructure.To make our chef node into our infrastructure.
+Bootstrapping is the command from which we can connect Workstation to the node.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

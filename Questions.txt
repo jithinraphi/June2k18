@@ -1,0 +1,27 @@
+Questions
+1)Draw the flow for waterfall and agile model?
+a)Following are the different steps involved in waterfall model
+Requirements,Design,Implementation,Verification and Deployment/Maintenance
+2)What is pom and what are the different types of pom?
+3)Difference between artifacts and packaging?
+In Maven terminology, the artifact is the resulting output of the maven build, generally a jar or war or other
+executable file. Artifacts in maven are identified by a coordinate system of groupId, artifactId, and version.
+Maven uses the groupId, artifactId, and version to identify dependencies (usually other jar files) needed to
+build and run your code.
+4)How to compare two jenkins jobs?
+diff $JENKINS_HOME/jobs/job1/config.xml $JENKINS_HOME/jobs/job2/config.xml
+or
+vimdiff $JENKINS_HOME/jobs/job1/config.xml $JENKINS_HOME/jobs/job2/config.xml
+5)How to check the cpu utilization in linux?
+top -b -n 1
+6)Difference between ANT and Maven?
+7)Can we rename POM.xml in Maven?
+mvn -f parent-pom.xml
+8)How to see the jenkins builds for last 100 days in Jenkins?
+Discard Old Build plugin
+Configure this plugin(Either n number of builds or n number of days)
+-----------------------------------------------------------------------------------------------------------
+1)What is Kubernetes,what are the advantages of Kubernetes and what Kubernetes will overcome?
+
+
+
