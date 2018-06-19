@@ -1,27 +1,68 @@
-Questions
-1)Draw the flow for waterfall and agile model?
-a)Following are the different steps involved in waterfall model
-Requirements,Design,Implementation,Verification and Deployment/Maintenance
-2)What is pom and what are the different types of pom?
-3)Difference between artifacts and packaging?
-In Maven terminology, the artifact is the resulting output of the maven build, generally a jar or war or other
-executable file. Artifacts in maven are identified by a coordinate system of groupId, artifactId, and version.
-Maven uses the groupId, artifactId, and version to identify dependencies (usually other jar files) needed to
-build and run your code.
-4)How to compare two jenkins jobs?
-diff $JENKINS_HOME/jobs/job1/config.xml $JENKINS_HOME/jobs/job2/config.xml
-or
-vimdiff $JENKINS_HOME/jobs/job1/config.xml $JENKINS_HOME/jobs/job2/config.xml
-5)How to check the cpu utilization in linux?
-top -b -n 1
-6)Difference between ANT and Maven?
-7)Can we rename POM.xml in Maven?
-mvn -f parent-pom.xml
-8)How to see the jenkins builds for last 100 days in Jenkins?
-Discard Old Build plugin
-Configure this plugin(Either n number of builds or n number of days)
------------------------------------------------------------------------------------------------------------
-1)What is Kubernetes,what are the advantages of Kubernetes and what Kubernetes will overcome?
+1)Difference between EBS,EFS and S3
+2)Difference between S3 and glacier
+3)What are the different orchestration tools
+4)How to set a docker image with maximum size of 500mb
+You can specify runtime constraints on memory and CPU, but not disk space.
+a)docker run -it --storage-opt size=120G fedora /bin/bash
+
+b)Constraints on disk I/O: Various options for setting constraints on disk I/O have been added to docker run:
+--device-read-bps, --device-write-bps, --device-read-iops, --device-write-iops, and --blkio-weight-device.
+
+5)Which is better to use when we have 2gb limit for storage
+6)Default network and storage used in docker and how to change the default settings
+7)Characteristics of EFS?
+8)Different types of databases that we can use with RDS and find the difference between them?
+9)Learn more about Kubernetes?
+10)Difference between pull and fetch in git?
+11)Difference between pull and clone in git?
+12)Different storage types of EC2 types?
+13)Learn more about volumes,snapshots and AMI in EC2?
+14)What is the purpose of docker inspect?
+
+
+1)What are the different types of deployments in code-deploy?inline and blue-green?
+2)What are the difference types of deployments in elastic beanstalk?
+3)What are the adv and disadv of inline deployment and blue-green deployment?
+4)3-tier architecture?where we should keep application,webserver and database?
+5)Routing table entries,Security group entries,NACL entries?
+6)Difference between elastic,network and application load balancer?
+7)What are the new concepts in ECS?
+8)Why to use ECS?
+9)How can we deploy a container on a particular instance in a group of cluster which contain 4
+ container instance?
+10)What are the different parameters in which we can scale in ECS?
+11)How auto scaling is achieved in ECS?
+
+12)Difference between COPY and AND?
+a)COPY <src> <dest>
+The COPY instruction will copy new files from <src> and add them to the container's filesystem at path <dest>
+ADD <src> <dest>
+The ADD instruction will copy new files from <src> and add them to the container's filesystem at path <dest>
+
+b)COPY is Same as 'ADD', but without the tar and remote URL handling.
+c)Although ADD and COPY are functionally similar, generally speaking, COPY is preferred. 
+That’s because it’s more transparent than ADD.
+d)Because image size matters, using ADD to fetch packages from remote URLs is strongly discouraged; 
+you should use curl or wget instead.
+
+
+13)What is the use of CMD and ENTRYPOINT in docker and what are the difference between both?
+14)What are the difference between JIRA agile and lean methodology?
+15)If we want to orchestrate on premise servers,which orchestration tool should we use?
+16)What are the advantages of using Kubernetes over other Orchestration tools?
+17)What are the things which will be present automatically when we create security groups using terraform?
+18)How cyclic dependency is resolved in Terraform?
+19)What if we delete terraform state,how can we perform rollback?
+20)Where we need to mention if we want to keep the terraform state file in a different location?
+21)Please mention the content of terraform state file?
+22)Difference between terraform and cloud formation and when to use what?
+23)What are the different components of cloud formation as well as terraform?
+24)Difference between EFS,EBS and S3 and when to use what?
+25)Where to see the logs of elastic beanstalk?
+26)What is the scenario when we stop the service which was mentioned either in cmd or entrypoint?
+27)What are the different problems which I have faced while using micro-service architecture?
+28)What is horizontal and vertical scaling in AWS?
+29)
 
 
 
