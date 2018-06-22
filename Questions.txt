@@ -19,18 +19,33 @@ b)Constraints on disk I/O: Various options for setting constraints on disk I/O h
 13)Learn more about volumes,snapshots and AMI in EC2?
 14)What is the purpose of docker inspect?
 
+------------------------------------------------------------------------------------------------------
 
 1)What are the different types of deployments in code-deploy?inline and blue-green?
+a)Inline deployment -Updates the instances in the deployment group with the latest application revision. 
+During a deployment, each instance will be briefly taken offline for its update.
+b)Blue-Green deployment - Replaces the instances in the deployment group with new instances and deploys the
+latest application revision to them. After instances in the replacement environment are registered with a
+load balancer, instances from the original environment are deregistered and can be terminated.
+
 2)What are the difference types of deployments in elastic beanstalk?
 3)What are the adv and disadv of inline deployment and blue-green deployment?
+
 4)3-tier architecture?where we should keep application,webserver and database?
+
 5)Routing table entries,Security group entries,NACL entries?
+
 6)Difference between elastic,network and application load balancer?
+
 7)What are the new concepts in ECS?
+
 8)Why to use ECS?
+
 9)How can we deploy a container on a particular instance in a group of cluster which contain 4
  container instance?
-10)What are the different parameters in which we can scale in ECS?
+
+ 10)What are the different parameters in which we can scale in ECS?
+ CPU,memory and ports
 11)How auto scaling is achieved in ECS?
 
 12)Difference between COPY and AND?
@@ -57,12 +72,84 @@ you should use curl or wget instead.
 21)Please mention the content of terraform state file?
 22)Difference between terraform and cloud formation and when to use what?
 23)What are the different components of cloud formation as well as terraform?
+
 24)Difference between EFS,EBS and S3 and when to use what?
+
 25)Where to see the logs of elastic beanstalk?
+
+
 26)What is the scenario when we stop the service which was mentioned either in cmd or entrypoint?
+cmd and entrypoint are the commands which will be running when we spin up a new docker container,
+when we manually stop the service inside the container,then it will kill that docker container.
+
 27)What are the different problems which I have faced while using micro-service architecture?
+
 28)What is horizontal and vertical scaling in AWS?
-29)
+Horizontal scaling is nothing but the normal scaling using auto scaling,ie.,scaling up/down as per the
+requirement.Suppose we have t2.micro,the new instance also will be t2.micro.
+Vertical scaling is nothing but to scale up new instance with higher configuration.ie.,Suppose we have
+t2.micro instance and we understood that we need to spin up new instance for balancing the load,but with 
+the same configuration it is not possible,In this case,we need to use t2.medium or t2.large.
+
+29)Difference between Elastic Beanstalk and CodeDeploy?
+a)CodeDeploy - It is a service that can deploy application changes to machines running in EC2 or on-premise. 
+It does not provision resources (they exist already) and it does not provide application-level monitoring.
+CodeDeploy will only perform deployment,it won't perform provisioning and monitoring.
+b)Elastic Beanstalk - It can launch resources (like load balancers, EC2 instances, and Auto Scaling Groups), 
+can deploy application changes, and provide application-level monitoring. Elastic Beanstalk is aimed more
+at developers of simple three-tier apps.
+Elastic Beanstalk performs deploy,provision and monitor also.
+
+---------------------------------------------------------------
+General questions
+1)What are the different commands that we can use in a dockerfile?
+cmd,entrypoint,run,expose,env,add,copy,volume,workdir and onbuild are the common commands that we use 
+in Dockerfile.
+
+2)How to set hostname for docker container?
+docker run -h jithinjustice -it ubuntu:latest /bin/bash
+Here it will save jithinjustice as hostname for that particular docker container.
+We can check it by going inside the docker container. - root@jithinjustice:/# 
+
+3)Different types of network in docker container?
+a)network - It is the default network.If we don't specify any network,then it will be bridge.
+Bridge networks are usually used when your applications run in standalone containers that need 
+to communicate.
+b)host - For standalone containers, remove network isolation between the container and the
+Docker host, and use the host’s networking directly.
+c)overlay -  Overlay networks connect multiple Docker daemons together and enable swarm services to
+communicate with each other. You can also use overlay networks to facilitate communication between a swarm
+service and a standalone container, or between two standalone containers on different Docker daemons.
+d)macvlan - Macvlan networks allow you to assign a MAC address to a container, making it appear as
+a physical device on your network. The Docker daemon routes traffic to containers by their MAC addresses.
+Using the macvlan driver is sometimes the best choice when dealing with legacy applications that expect to
+be directly connected to the physical network, rather than routed through the Docker host’s network stack.
+e)none- For this container, disable all networking. Usually used in conjunction with a custom network driver. 
+none is not available for swarm services. 
+
+4)What is docker storage driver and what is the purpose of it?
+aufs is the default storage driver for docker in the previous versions whereas overlay2 is the default
+storage driver in the latest docker versions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
